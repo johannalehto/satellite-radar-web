@@ -1,5 +1,8 @@
+import { buildRadarScene } from '../../domain/radar/calculations/buildRadarScene'
 import { useVisibleSatellites } from '../../radar/hooks/useVisibleSatellites'
+import RadarView from '../components/RadarView'
 import SatellitePassList from '../components/SatellitePassList'
+import { radarTimestampMs } from '../config/radarTimestamp'
 import { visibleSatellitesLoader } from '../config/visibleSatellitesLoader'
 import './RadarPage.css'
 
@@ -12,6 +15,7 @@ function RadarPage() {
     RADAR_LONGITUDE,
     visibleSatellitesLoader,
   )
+  const radarScene = buildRadarScene(satellitePasses, radarTimestampMs)
 
   return (
     <main className="radar-page">
@@ -24,7 +28,10 @@ function RadarPage() {
           Unable to load visible satellites.
         </p>
       ) : (
-        <SatellitePassList passes={satellitePasses} />
+        <>
+          <RadarView scene={radarScene} />
+          <SatellitePassList passes={satellitePasses} />
+        </>
       )}
     </main>
   )

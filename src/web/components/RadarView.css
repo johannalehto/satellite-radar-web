@@ -1,0 +1,12 @@
+.radar-view {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.radar-loading {
+  display: grid;
+  height: 100%;
+  margin: 0;
+  place-items: center;
+  color: #8f8f8f;
+}
