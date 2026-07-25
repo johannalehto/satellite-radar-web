@@ -1,5 +1,5 @@
 import { useVisibleSatellites } from '../../radar/hooks/useVisibleSatellites'
-import SatellitePassCard from '../components/SatellitePassCard'
+import SatellitePassList from '../components/SatellitePassList'
 import './RadarPage.css'
 
 function RadarPage() {
@@ -16,14 +16,7 @@ function RadarPage() {
           Unable to load visible satellites.
         </p>
       ) : (
-        <section className="satellite-list" aria-label="Visible satellites">
-          {satellitePasses.map((pass) => (
-            <SatellitePassCard
-              key={pass.passId}
-              pass={pass}
-            />
-          ))}
-        </section>
+        <SatellitePassList passes={satellitePasses} />
       )}
     </main>
   )
