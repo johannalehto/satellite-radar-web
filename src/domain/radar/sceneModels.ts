@@ -8,6 +8,7 @@ export type RadarSatelliteDot = {
   name: string
   position: NormalizedRadarPoint
   trajectory: StraightRadarTrajectory | null
+  opacity: number
   azimuthDeg: number
   elevationDeg: number
 }

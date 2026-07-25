@@ -87,9 +87,15 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
         return (
           <Line
             key={`trajectory-${satellite.passId}`}
-            p1={toViewportPoint(satellite.trajectory.start, viewport)}
-            p2={toViewportPoint(satellite.trajectory.end, viewport)}
-            color="#b5b5b5"
+            p1={toViewportPoint(
+              satellite.trajectory.lineStart,
+              viewport,
+            )}
+            p2={toViewportPoint(
+              satellite.trajectory.lineEnd,
+              viewport,
+            )}
+            color={`rgba(181, 181, 181, ${satellite.opacity})`}
             strokeWidth={1}
           />
         )
@@ -121,12 +127,14 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             <Circle
               c={position}
               r={SATELLITE_RADIUS * 2.4}
-              color="rgba(255, 255, 255, 0.12)"
+              color={`rgba(255, 255, 255, ${
+                satellite.opacity * 0.12
+              })`}
             />
             <Circle
               c={position}
               r={SATELLITE_RADIUS}
-              color="#ffffff"
+              color={`rgba(255, 255, 255, ${satellite.opacity})`}
             />
           </Fragment>
         )

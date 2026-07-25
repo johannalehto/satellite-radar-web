@@ -5,8 +5,10 @@ import { projectToRadarPoint } from './projectToRadarPoint'
 const TRAJECTORY_EXTENT = 1.25
 
 export type StraightRadarTrajectory = {
-  start: NormalizedRadarPoint
-  end: NormalizedRadarPoint
+  entryPosition: NormalizedRadarPoint
+  exitPosition: NormalizedRadarPoint
+  lineStart: NormalizedRadarPoint
+  lineEnd: NormalizedRadarPoint
 }
 
 export function buildStraightTrajectory(
@@ -32,8 +34,10 @@ export function buildStraightTrajectory(
 
   if (deltaX === 0 && deltaY === 0) {
     return {
-      start: firstPoint,
-      end: lastPoint,
+      entryPosition: firstPoint,
+      exitPosition: lastPoint,
+      lineStart: firstPoint,
+      lineEnd: lastPoint,
     }
   }
 
@@ -69,7 +73,9 @@ export function buildStraightTrajectory(
   intersections.sort((left, right) => left.progress - right.progress)
 
   return {
-    start: intersections[0]?.point ?? firstPoint,
-    end: intersections.at(-1)?.point ?? lastPoint,
+    entryPosition: firstPoint,
+    exitPosition: lastPoint,
+    lineStart: intersections[0]?.point ?? firstPoint,
+    lineEnd: intersections.at(-1)?.point ?? lastPoint,
   }
 }
