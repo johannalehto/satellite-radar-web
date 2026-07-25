@@ -1,6 +1,29 @@
 .radar-view {
+  position: relative;
   width: 100%;
   aspect-ratio: 1;
+  overflow: hidden;
+  background: #242424;
+}
+
+.radar-north-marker {
+  position: absolute;
+  z-index: 1;
+  top: 0.75rem;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  color: #d0d0d0;
+  font-size: 1.125rem;
+  font-weight: 300;
+  line-height: 1;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.radar-north-arrow {
+  margin-bottom: 0.125rem;
+  font-size: 1.75rem;
 }
 
 .radar-loading {

@@ -1,4 +1,5 @@
 import type { SatellitePassId } from './models'
+import type { StraightRadarTrajectory } from './calculations/buildStraightTrajectory'
 import type { NormalizedRadarPoint } from './calculations/projectToRadarPoint'
 
 export type RadarSatelliteDot = {
@@ -6,7 +7,7 @@ export type RadarSatelliteDot = {
   satelliteId: string
   name: string
   position: NormalizedRadarPoint
-  trajectory: NormalizedRadarPoint[]
+  trajectory: StraightRadarTrajectory | null
   azimuthDeg: number
   elevationDeg: number
 }

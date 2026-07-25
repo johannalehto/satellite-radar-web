@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import {
   Canvas,
   Circle,
@@ -14,6 +15,7 @@ const RADAR_RADIUS_RATIO = 0.4
 const SATELLITE_RADIUS = 5
 const USER_RADIUS = 4
 const TICK_HALF_LENGTH = 8
+const GRID_POSITIONS = [0.2, 0.4, 0.6, 0.8]
 
 function toViewportPoint(
   point: NormalizedRadarPoint,
@@ -60,23 +62,43 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       style={{ width: viewport.width, height: viewport.height }}
       aria-label="Satellite radar"
     >
-      <Line
-        p1={vec(center.x - radarRadius, center.y)}
-        p2={vec(center.x + radarRadius, center.y)}
-        color="#353535"
-        strokeWidth={1}
-      />
-      <Line
-        p1={vec(center.x, center.y - radarRadius)}
-        p2={vec(center.x, center.y + radarRadius)}
-        color="#353535"
-        strokeWidth={1}
-      />
+      {GRID_POSITIONS.flatMap((position) => [
+        <Line
+          key={`vertical-${position}`}
+          p1={vec(viewport.width * position, 0)}
+          p2={vec(viewport.width * position, viewport.height)}
+          color="#343434"
+          strokeWidth={1}
+        />,
+        <Line
+          key={`horizontal-${position}`}
+          p1={vec(0, viewport.height * position)}
+          p2={vec(viewport.width, viewport.height * position)}
+          color="#343434"
+          strokeWidth={1}
+        />,
+      ])}
+
+      {scene.satellites.map((satellite) => {
+        if (!satellite.trajectory) {
+          return null
+        }
+
+        return (
+          <Line
+            key={`trajectory-${satellite.passId}`}
+            p1={toViewportPoint(satellite.trajectory.start, viewport)}
+            p2={toViewportPoint(satellite.trajectory.end, viewport)}
+            color="#b5b5b5"
+            strokeWidth={1}
+          />
+        )
+      })}
 
       <Circle
         c={center}
         r={radarRadius}
-        color="#8a8a8a"
+        color="#a4a4a4"
         style="stroke"
         strokeWidth={1}
       />
@@ -91,39 +113,30 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
         />
       ))}
 
-      {scene.satellites.flatMap((satellite) =>
-        satellite.trajectory.slice(0, -1).map((point, index) => {
-          const nextPoint = satellite.trajectory[index + 1]
-
-          if (!nextPoint) {
-            return []
-          }
-
-          return (
-            <Line
-              key={`${satellite.passId}-${index}`}
-              p1={toViewportPoint(point, viewport)}
-              p2={toViewportPoint(nextPoint, viewport)}
-              color="#777777"
-              strokeWidth={1}
-            />
-          )
-        }),
-      )}
-
       {scene.satellites.map((satellite) => {
         const position = toViewportPoint(satellite.position, viewport)
 
         return (
-          <Circle
-            key={satellite.passId}
-            c={position}
-            r={SATELLITE_RADIUS}
-            color="#ffffff"
-          />
+          <Fragment key={satellite.passId}>
+            <Circle
+              c={position}
+              r={SATELLITE_RADIUS * 2.4}
+              color="rgba(255, 255, 255, 0.12)"
+            />
+            <Circle
+              c={position}
+              r={SATELLITE_RADIUS}
+              color="#ffffff"
+            />
+          </Fragment>
         )
       })}
 
+      <Circle
+        c={userPosition}
+        r={USER_RADIUS * 2.2}
+        color="rgba(255, 139, 223, 0.12)"
+      />
       <Circle
         c={userPosition}
         r={USER_RADIUS}

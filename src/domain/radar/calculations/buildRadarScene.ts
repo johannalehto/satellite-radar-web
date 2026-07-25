@@ -1,5 +1,6 @@
 import type { SatellitePass } from '../models'
 import type { RadarScene } from '../sceneModels'
+import { buildStraightTrajectory } from './buildStraightTrajectory'
 import { interpolateSatelliteTrack } from './interpolateSatelliteTrack'
 import { projectToRadarPoint } from './projectToRadarPoint'
 
@@ -23,12 +24,7 @@ export function buildRadarScene(
           position.azimuthDeg,
           position.elevationDeg,
         ),
-        trajectory: pass.track.map((trackPoint) =>
-          projectToRadarPoint(
-            trackPoint.azimuthDeg,
-            trackPoint.elevationDeg,
-          ),
-        ),
+        trajectory: buildStraightTrajectory(pass.track),
         azimuthDeg: position.azimuthDeg,
         elevationDeg: position.elevationDeg,
       },

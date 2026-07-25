@@ -49,6 +49,11 @@ function RadarView({ scene }: RadarViewProps) {
 
   return (
     <div ref={containerRef} className="radar-view">
+      <div className="radar-north-marker" aria-hidden="true">
+        <span className="radar-north-arrow">△</span>
+        <span>N</span>
+      </div>
+
       {viewport.width > 0 && (
         <WithSkiaWeb
           opts={{ locateFile: () => canvaskitWasmUrl }}
