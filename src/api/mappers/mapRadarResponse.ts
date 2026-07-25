@@ -41,18 +41,24 @@ export function mapSatellitePassResponse(
     ),
     satelliteId: response.info.satellite_id,
     name: response.info.satellite_name,
-    owner: {
-      code: response.info.owner.code,
-      name: response.info.owner.name,
-    },
-    objectType: response.info.object_type,
-    launch: {
-      date: response.info.launch.date,
-      site: {
-        code: response.info.launch.site.code,
-        name: response.info.launch.site.name,
-      },
-    },
+    owner: response.info.owner
+      ? {
+          code: response.info.owner.code,
+          name: response.info.owner.name,
+        }
+      : null,
+    objectType: response.info.object_type ?? null,
+    launch: response.info.launch
+      ? {
+          date: response.info.launch.date ?? null,
+          site: response.info.launch.site
+            ? {
+                code: response.info.launch.site.code,
+                name: response.info.launch.site.name,
+              }
+            : null,
+        }
+      : null,
     visibleFromMs: Date.parse(response.visibility.visible_from),
     visibleUntilMs: Date.parse(response.visibility.visible_until),
     maxElevationDeg: response.visibility.max_elevation_deg,

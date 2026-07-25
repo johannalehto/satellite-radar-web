@@ -17,11 +17,11 @@ function SatellitePassCard({ pass }: SatellitePassCardProps) {
       <dl className="satellite-details">
         <div>
           <dt>Object type</dt>
-          <dd>{pass.objectType}</dd>
+          <dd>{pass.objectType ?? 'Unknown'}</dd>
         </div>
         <div>
           <dt>Owner</dt>
-          <dd>{pass.owner.name}</dd>
+          <dd>{pass.owner?.name ?? 'Unknown'}</dd>
         </div>
         <div>
           <dt>Maximum elevation</dt>

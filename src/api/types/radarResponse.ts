@@ -9,16 +9,22 @@ export type LaunchSiteResponse = {
 }
 
 export type SatelliteLaunchResponse = {
-  date: string
-  site: LaunchSiteResponse
+  date?: string | null
+  site?: LaunchSiteResponse | null
 }
+
+export type SatelliteObjectTypeResponse =
+  | 'payload'
+  | 'rocket_body'
+  | 'debris'
+  | 'unknown'
 
 export type SatelliteInfoResponse = {
   satellite_id: string
   satellite_name: string
-  owner: SatelliteOwnerResponse
-  object_type: string
-  launch: SatelliteLaunchResponse
+  owner?: SatelliteOwnerResponse | null
+  object_type?: SatelliteObjectTypeResponse | null
+  launch?: SatelliteLaunchResponse | null
 }
 
 export type SatellitePassVisibilityResponse = {

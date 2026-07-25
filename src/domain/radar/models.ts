@@ -11,9 +11,15 @@ export type LaunchSite = {
 }
 
 export type SatelliteLaunch = {
-  date: string
-  site: LaunchSite
+  date: string | null
+  site: LaunchSite | null
 }
+
+export type SatelliteObjectType =
+  | 'payload'
+  | 'rocket_body'
+  | 'debris'
+  | 'unknown'
 
 export type SatellitePassPosition = {
   azimuthDeg: number
@@ -31,9 +37,9 @@ export type SatellitePass = {
   passId: SatellitePassId
   satelliteId: string
   name: string
-  owner: SatelliteOwner
-  objectType: string
-  launch: SatelliteLaunch
+  owner: SatelliteOwner | null
+  objectType: SatelliteObjectType | null
+  launch: SatelliteLaunch | null
   visibleFromMs: number
   visibleUntilMs: number
   maxElevationDeg: number
