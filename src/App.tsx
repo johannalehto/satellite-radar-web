@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { getVisibleSatellites } from './api/radarApi'
+import type { SatellitePassResponse } from './api/types/radarResponse'
 import SatelliteCard from './components/SatelliteCard'
-import type { SatellitePass } from './types/radar'
 import './App.css'
 
 function App() {
-  const [satellites, setSatellites] = useState<SatellitePass[]>([])
+  const [satellites, setSatellites] = useState<SatellitePassResponse[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {

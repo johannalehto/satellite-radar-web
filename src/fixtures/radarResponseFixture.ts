@@ -1,6 +1,6 @@
-import type { RadarResponse } from '../types/radar'
+import type { VisibleSatellitesResponse } from '../api/types/radarResponse'
 
-export const radarResponseFixture: RadarResponse =
+export const radarResponseFixture: VisibleSatellitesResponse =
     [
       {
         "info": {

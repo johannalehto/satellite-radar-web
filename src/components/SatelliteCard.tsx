@@ -1,7 +1,7 @@
-import type { SatellitePass } from '../types/radar'
+import type { SatellitePassResponse } from '../api/types/radarResponse'
 
 type SatelliteCardProps = {
-  satellite: SatellitePass
+  satellite: SatellitePassResponse
 }
 
 function formatDate(date: string) {

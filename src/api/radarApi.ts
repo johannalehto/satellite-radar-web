@@ -1,10 +1,10 @@
-import type { RadarResponse } from '../types/radar'
-import { radarResponseFixture } from './radarResponseFixture'
+import { radarResponseFixture } from '../fixtures/radarResponseFixture'
+import type { VisibleSatellitesResponse } from './types/radarResponse'
 
 export async function getVisibleSatellites(
   latitude: number,
   longitude: number,
-): Promise<RadarResponse> {
+): Promise<VisibleSatellitesResponse> {
   void latitude
   void longitude
 
