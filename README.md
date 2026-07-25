@@ -1,6 +1,11 @@
 # Satellite Radar Web App
 
-Coming up. 
+## Development and production data
 
-- add docs
-```
+Vite selects the environment from the command being run
+
+- `npm run dev` loads `.env.development` and uses the radar response fixture.
+- `npm run build` loads `.env.production` and uses the deployed FastAPI API.
+- `npm run preview` serves the production build created by `npm run build`.
+
+Restart the Vite development server after changing an environment file.

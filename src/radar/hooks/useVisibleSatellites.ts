@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { mapVisibleSatellitesResponse } from '../../api/mappers/mapRadarResponse'
-import { getVisibleSatellites } from '../../api/radarApi'
+import type { VisibleSatellitesLoader } from '../../api/radarClient'
 import type { SatellitePass } from '../../domain/radar/models'
 
 type UseVisibleSatellitesResult = {
@@ -12,6 +12,7 @@ type UseVisibleSatellitesResult = {
 export function useVisibleSatellites(
   latitude: number,
   longitude: number,
+  loadVisibleSatellites: VisibleSatellitesLoader,
 ): UseVisibleSatellitesResult {
   const [satellitePasses, setSatellitePasses] = useState<SatellitePass[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -25,7 +26,7 @@ export function useVisibleSatellites(
       setError(null)
 
       try {
-        const response = await getVisibleSatellites(latitude, longitude)
+        const response = await loadVisibleSatellites(latitude, longitude)
         const passes = mapVisibleSatellitesResponse(response)
 
         if (!isCancelled) {
@@ -52,7 +53,7 @@ export function useVisibleSatellites(
     return () => {
       isCancelled = true
     }
-  }, [latitude, longitude])
+  }, [latitude, longitude, loadVisibleSatellites])
 
   return {
     satellitePasses,
