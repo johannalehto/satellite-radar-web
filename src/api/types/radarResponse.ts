@@ -1,38 +1,38 @@
-export type RadarOwnerResponse = {
+export type SatelliteOwnerResponse = {
   code: string
   name: string
 }
 
-export type RadarLaunchSiteResponse = {
+export type LaunchSiteResponse = {
   code: string
   name: string
 }
 
 export type SatelliteLaunchResponse = {
   date: string
-  site: RadarLaunchSiteResponse
+  site: LaunchSiteResponse
 }
 
 export type SatelliteInfoResponse = {
   satellite_id: string
   satellite_name: string
-  owner: RadarOwnerResponse
+  owner: SatelliteOwnerResponse
   object_type: string
   launch: SatelliteLaunchResponse
 }
 
-export type VisibilityWindowResponse = {
+export type SatellitePassVisibilityResponse = {
   visible_from: string
   visible_until: string
   max_elevation_deg: number
 }
 
-export type PassPositionResponse = {
+export type SatellitePassPositionResponse = {
   azimuth_deg: number
   direction: string
 }
 
-export type TrackPointResponse = {
+export type SatelliteTrackPointResponse = {
   timestamp: string
   azimuth_deg: number
   elevation_deg: number
@@ -41,10 +41,10 @@ export type TrackPointResponse = {
 
 export type SatellitePassResponse = {
   info: SatelliteInfoResponse
-  visibility: VisibilityWindowResponse
-  start: PassPositionResponse
-  end: PassPositionResponse
-  track: TrackPointResponse[]
+  visibility: SatellitePassVisibilityResponse
+  start: SatellitePassPositionResponse
+  end: SatellitePassPositionResponse
+  track: SatelliteTrackPointResponse[]
 }
 
 export type VisibleSatellitesResponse = SatellitePassResponse[]
