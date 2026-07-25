@@ -1,4 +1,4 @@
-import type { SatellitePass } from '../domain/radar/models'
+import type { SatellitePass } from '../../domain/radar/models'
 
 type SatellitePassCardProps = {
   pass: SatellitePass

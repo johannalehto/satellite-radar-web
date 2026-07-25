@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { mapVisibleSatellitesResponse } from './api/mappers/mapRadarResponse'
-import { getVisibleSatellites } from './api/radarApi'
-import SatellitePassCard from './components/SatellitePassCard'
-import type { SatellitePass } from './domain/radar/models'
-import './App.css'
+import { mapVisibleSatellitesResponse } from '../../api/mappers/mapRadarResponse'
+import { getVisibleSatellites } from '../../api/radarApi'
+import type { SatellitePass } from '../../domain/radar/models'
+import SatellitePassCard from '../components/SatellitePassCard'
+import './RadarPage.css'
 
-function App() {
+function RadarPage() {
   const [satellitePasses, setSatellitePasses] = useState<SatellitePass[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -29,7 +29,7 @@ function App() {
   }, [])
 
   return (
-    <main className="app">
+    <main className="radar-page">
       <h1>SATELLITES NOW</h1>
 
       {isLoading ? (
@@ -48,4 +48,4 @@ function App() {
   )
 }
 
-export default App
+export default RadarPage
