@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
+import { mapVisibleSatellitesResponse } from './api/mappers/mapRadarResponse'
 import { getVisibleSatellites } from './api/radarApi'
-import type { SatellitePassResponse } from './api/types/radarResponse'
-import SatelliteCard from './components/SatelliteCard'
+import SatellitePassCard from './components/SatellitePassCard'
+import type { SatellitePass } from './domain/radar/models'
 import './App.css'
 
 function App() {
-  const [satellites, setSatellites] = useState<SatellitePassResponse[]>([])
+  const [satellitePasses, setSatellitePasses] = useState<SatellitePass[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -15,7 +16,7 @@ function App() {
       const response = await getVisibleSatellites(0, 0)
 
       if (!isCancelled) {
-        setSatellites(response)
+        setSatellitePasses(mapVisibleSatellitesResponse(response))
         setIsLoading(false)
       }
     }
@@ -35,10 +36,10 @@ function App() {
         <p className="loading">Loading satellites…</p>
       ) : (
         <section className="satellite-list" aria-label="Visible satellites">
-          {satellites.map((satellite) => (
-            <SatelliteCard
-              key={`${satellite.info.satellite_id}-${satellite.visibility.visible_from}`}
-              satellite={satellite}
+          {satellitePasses.map((pass) => (
+            <SatellitePassCard
+              key={pass.passId}
+              pass={pass}
             />
           ))}
         </section>

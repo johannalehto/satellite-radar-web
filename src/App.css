@@ -20,14 +20,14 @@
   gap: 1rem;
 }
 
-.satellite-card {
+.satellite-pass-card {
   padding: 1.25rem;
   background: #151515;
   border: 1px solid #2a2a2a;
   border-radius: 0.5rem;
 }
 
-.satellite-card h2 {
+.satellite-pass-card h2 {
   margin: 0 0 1rem;
   font-size: 1.1rem;
 }
