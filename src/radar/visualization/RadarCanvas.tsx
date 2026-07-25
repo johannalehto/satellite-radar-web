@@ -91,6 +91,26 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
         />
       ))}
 
+      {scene.satellites.flatMap((satellite) =>
+        satellite.trajectory.slice(0, -1).map((point, index) => {
+          const nextPoint = satellite.trajectory[index + 1]
+
+          if (!nextPoint) {
+            return []
+          }
+
+          return (
+            <Line
+              key={`${satellite.passId}-${index}`}
+              p1={toViewportPoint(point, viewport)}
+              p2={toViewportPoint(nextPoint, viewport)}
+              color="#777777"
+              strokeWidth={1}
+            />
+          )
+        }),
+      )}
+
       {scene.satellites.map((satellite) => {
         const position = toViewportPoint(satellite.position, viewport)
 

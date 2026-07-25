@@ -1,3 +1,7 @@
 export const RADAR_FIXTURE_INITIAL_TIMESTAMP_MS = Date.parse(
   '2026-07-24T15:25:10.247071Z',
 )
+
+export const RADAR_FIXTURE_END_TIMESTAMP_MS = Date.parse(
+  '2026-07-24T15:32:10.247071Z',
+)

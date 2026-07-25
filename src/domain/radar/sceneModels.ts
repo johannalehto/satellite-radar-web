@@ -6,6 +6,7 @@ export type RadarSatelliteDot = {
   satelliteId: string
   name: string
   position: NormalizedRadarPoint
+  trajectory: NormalizedRadarPoint[]
   azimuthDeg: number
   elevationDeg: number
 }

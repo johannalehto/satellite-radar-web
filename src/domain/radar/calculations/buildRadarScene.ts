@@ -23,6 +23,12 @@ export function buildRadarScene(
           position.azimuthDeg,
           position.elevationDeg,
         ),
+        trajectory: pass.track.map((trackPoint) =>
+          projectToRadarPoint(
+            trackPoint.azimuthDeg,
+            trackPoint.elevationDeg,
+          ),
+        ),
         azimuthDeg: position.azimuthDeg,
         elevationDeg: position.elevationDeg,
       },
