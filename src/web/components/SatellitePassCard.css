@@ -1,8 +1,8 @@
 .satellite-pass-card {
-  padding: 1.25rem;
-  background: #151515;
-  border: 1px solid #2a2a2a;
-  border-radius: 0.5rem;
+  padding: 40px;
+  background: #242424;
+  border: 1px solid #fffdfd;
+  border-radius: 48px;
 }
 
 .satellite-pass-card h2 {

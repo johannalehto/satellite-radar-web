@@ -19,6 +19,7 @@ const EMPTY_VIEWPORT: RadarViewport = {
   width: 0,
   height: 0,
 }
+const RADAR_VIEW_HEIGHT_RATIO = 1.2
 
 function RadarView({ scene }: RadarViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -36,8 +37,11 @@ function RadarView({ scene }: RadarViewProps) {
         return
       }
 
-      const size = entry.contentRect.width
-      setViewport({ width: size, height: size })
+      const width = entry.contentRect.width
+      setViewport({
+        width,
+        height: width * RADAR_VIEW_HEIGHT_RATIO,
+      })
     })
 
     resizeObserver.observe(container)
@@ -50,7 +54,7 @@ function RadarView({ scene }: RadarViewProps) {
   return (
     <div ref={containerRef} className="radar-view">
       <div className="radar-north-marker" aria-hidden="true">
-        <span className="radar-north-arrow">△</span>
+        <span className="radar-north-arrow" />
         <span>N</span>
       </div>
 

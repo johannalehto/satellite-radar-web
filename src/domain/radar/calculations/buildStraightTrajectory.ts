@@ -2,7 +2,7 @@ import type { SatelliteTrackPoint } from '../models'
 import type { NormalizedRadarPoint } from './projectToRadarPoint'
 import { projectToRadarPoint } from './projectToRadarPoint'
 
-const TRAJECTORY_EXTENT = 1.25
+const TRAJECTORY_MARGIN = 0.3
 
 export type StraightRadarTrajectory = {
   entryPosition: NormalizedRadarPoint
@@ -41,41 +41,44 @@ export function buildStraightTrajectory(
     }
   }
 
-  const intersections: Array<{
-    point: NormalizedRadarPoint
-    progress: number
-  }> = []
-
-  function addIntersection(progress: number) {
-    const point = {
-      x: firstPoint.x + deltaX * progress,
-      y: firstPoint.y + deltaY * progress,
-    }
-
-    if (
-      Math.abs(point.x) <= TRAJECTORY_EXTENT &&
-      Math.abs(point.y) <= TRAJECTORY_EXTENT
-    ) {
-      intersections.push({ point, progress })
-    }
-  }
-
-  if (deltaX !== 0) {
-    addIntersection((-TRAJECTORY_EXTENT - firstPoint.x) / deltaX)
-    addIntersection((TRAJECTORY_EXTENT - firstPoint.x) / deltaX)
-  }
-
-  if (deltaY !== 0) {
-    addIntersection((-TRAJECTORY_EXTENT - firstPoint.y) / deltaY)
-    addIntersection((TRAJECTORY_EXTENT - firstPoint.y) / deltaY)
-  }
-
-  intersections.sort((left, right) => left.progress - right.progress)
+  const squaredLength = deltaX ** 2 + deltaY ** 2
+  const length = Math.sqrt(squaredLength)
+  const projection =
+    2 * (firstPoint.x * deltaX + firstPoint.y * deltaY)
+  const distanceFromHorizon =
+    firstPoint.x ** 2 + firstPoint.y ** 2 - 1
+  const discriminant =
+    projection ** 2 - 4 * squaredLength * distanceFromHorizon
+  const discriminantRoot = Math.sqrt(Math.max(discriminant, 0))
+  const firstIntersectionProgress =
+    (-projection - discriminantRoot) / (2 * squaredLength)
+  const secondIntersectionProgress =
+    (-projection + discriminantRoot) / (2 * squaredLength)
+  const directionX = deltaX / length
+  const directionY = deltaY / length
 
   return {
     entryPosition: firstPoint,
     exitPosition: lastPoint,
-    lineStart: intersections[0]?.point ?? firstPoint,
-    lineEnd: intersections.at(-1)?.point ?? lastPoint,
+    lineStart: {
+      x:
+        firstPoint.x +
+        deltaX * firstIntersectionProgress -
+        directionX * TRAJECTORY_MARGIN,
+      y:
+        firstPoint.y +
+        deltaY * firstIntersectionProgress -
+        directionY * TRAJECTORY_MARGIN,
+    },
+    lineEnd: {
+      x:
+        firstPoint.x +
+        deltaX * secondIntersectionProgress +
+        directionX * TRAJECTORY_MARGIN,
+      y:
+        firstPoint.y +
+        deltaY * secondIntersectionProgress +
+        directionY * TRAJECTORY_MARGIN,
+    },
   }
 }

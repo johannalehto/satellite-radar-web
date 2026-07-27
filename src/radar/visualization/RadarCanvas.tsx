@@ -1,8 +1,10 @@
 import { Fragment } from 'react'
 import {
+  BlurMask,
   Canvas,
   Circle,
   Line,
+  LinearGradient,
   vec,
 } from '@shopify/react-native-skia'
 import type { NormalizedRadarPoint } from '../../domain/radar/calculations/projectToRadarPoint'
@@ -12,10 +14,11 @@ import type {
 } from './types'
 
 const RADAR_RADIUS_RATIO = 0.4
-const SATELLITE_RADIUS = 5
-const USER_RADIUS = 4
-const TICK_HALF_LENGTH = 8
-const GRID_POSITIONS = [0.2, 0.4, 0.6, 0.8]
+const SATELLITE_RADIUS_RATIO = 0.0105
+const USER_RADIUS_RATIO = 0.0052
+const TICK_HALF_LENGTH_RATIO = 0.021
+const VERTICAL_GRID_POSITIONS = [0.08, 0.34, 0.59, 0.85]
+const HORIZONTAL_GRID_POSITIONS = [0.3, 0.52, 0.74]
 
 function toViewportPoint(
   point: NormalizedRadarPoint,
@@ -36,24 +39,27 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
   const center = vec(viewport.width / 2, viewport.height / 2)
   const radarRadius =
     Math.min(viewport.width, viewport.height) * RADAR_RADIUS_RATIO
+  const satelliteRadius = viewport.width * SATELLITE_RADIUS_RATIO
+  const userRadius = viewport.width * USER_RADIUS_RATIO
+  const tickHalfLength = viewport.width * TICK_HALF_LENGTH_RATIO
   const userPosition = toViewportPoint(scene.userPosition, viewport)
 
   const cardinalTicks = [
     {
-      start: vec(center.x, center.y - radarRadius - TICK_HALF_LENGTH),
-      end: vec(center.x, center.y - radarRadius + TICK_HALF_LENGTH),
+      start: vec(center.x, center.y - radarRadius - tickHalfLength),
+      end: vec(center.x, center.y - radarRadius + tickHalfLength),
     },
     {
-      start: vec(center.x + radarRadius - TICK_HALF_LENGTH, center.y),
-      end: vec(center.x + radarRadius + TICK_HALF_LENGTH, center.y),
+      start: vec(center.x + radarRadius - tickHalfLength, center.y),
+      end: vec(center.x + radarRadius + tickHalfLength, center.y),
     },
     {
-      start: vec(center.x, center.y + radarRadius - TICK_HALF_LENGTH),
-      end: vec(center.x, center.y + radarRadius + TICK_HALF_LENGTH),
+      start: vec(center.x, center.y + radarRadius - tickHalfLength),
+      end: vec(center.x, center.y + radarRadius + tickHalfLength),
     },
     {
-      start: vec(center.x - radarRadius - TICK_HALF_LENGTH, center.y),
-      end: vec(center.x - radarRadius + TICK_HALF_LENGTH, center.y),
+      start: vec(center.x - radarRadius - tickHalfLength, center.y),
+      end: vec(center.x - radarRadius + tickHalfLength, center.y),
     },
   ]
 
@@ -62,51 +68,68 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       style={{ width: viewport.width, height: viewport.height }}
       aria-label="Satellite radar"
     >
-      {GRID_POSITIONS.flatMap((position) => [
+      {VERTICAL_GRID_POSITIONS.map((position) => (
         <Line
           key={`vertical-${position}`}
           p1={vec(viewport.width * position, 0)}
           p2={vec(viewport.width * position, viewport.height)}
           color="#343434"
-          strokeWidth={1}
-        />,
+          strokeWidth={2}
+        />
+      ))}
+      {HORIZONTAL_GRID_POSITIONS.map((position) => (
         <Line
           key={`horizontal-${position}`}
           p1={vec(0, viewport.height * position)}
           p2={vec(viewport.width, viewport.height * position)}
           color="#343434"
-          strokeWidth={1}
-        />,
-      ])}
+          strokeWidth={2}
+        />
+      ))}
 
       {scene.satellites.map((satellite) => {
         if (!satellite.trajectory) {
           return null
         }
 
+        const lineStart = toViewportPoint(
+          satellite.trajectory.lineStart,
+          viewport,
+        )
+        const lineEnd = toViewportPoint(
+          satellite.trajectory.lineEnd,
+          viewport,
+        )
+        const trajectoryOpacity = satellite.opacity * 0.9
+
         return (
           <Line
             key={`trajectory-${satellite.passId}`}
-            p1={toViewportPoint(
-              satellite.trajectory.lineStart,
-              viewport,
-            )}
-            p2={toViewportPoint(
-              satellite.trajectory.lineEnd,
-              viewport,
-            )}
-            color={`rgba(181, 181, 181, ${satellite.opacity})`}
-            strokeWidth={1}
-          />
+            p1={lineStart}
+            p2={lineEnd}
+            strokeWidth={0.4}
+          >
+            <LinearGradient
+              start={lineStart}
+              end={lineEnd}
+              colors={[
+                'rgba(242, 242, 242, 0)',
+                `rgba(242, 242, 242, ${trajectoryOpacity})`,
+                `rgba(242, 242, 242, ${trajectoryOpacity})`,
+                'rgba(242, 242, 242, 0)',
+              ]}
+              positions={[0, 0.16, 0.84, 1]}
+            />
+          </Line>
         )
       })}
 
       <Circle
         c={center}
         r={radarRadius}
-        color="#a4a4a4"
+        color="rgba(222, 222, 222, 0.85)"
         style="stroke"
-        strokeWidth={1}
+        strokeWidth={0.2}
       />
 
       {cardinalTicks.map((tick, index) => (
@@ -114,8 +137,8 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           key={index}
           p1={tick.start}
           p2={tick.end}
-          color="#f0f0f0"
-          strokeWidth={2}
+          color="#f2f2f2"
+          strokeWidth={1.5}
         />
       ))}
 
@@ -126,14 +149,31 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           <Fragment key={satellite.passId}>
             <Circle
               c={position}
-              r={SATELLITE_RADIUS * 2.4}
+              r={satelliteRadius * 1.35}
               color={`rgba(255, 255, 255, ${
-                satellite.opacity * 0.12
+                satellite.opacity * 0.55
               })`}
-            />
+            >
+              <BlurMask
+                blur={satelliteRadius * 1.35}
+                style="normal"
+              />
+            </Circle>
             <Circle
               c={position}
-              r={SATELLITE_RADIUS}
+              r={satelliteRadius * 1.1}
+              color={`rgba(255, 255, 255, ${
+                satellite.opacity * 0.55
+              })`}
+            >
+              <BlurMask
+                blur={satelliteRadius * 0.55}
+                style="normal"
+              />
+            </Circle>
+            <Circle
+              c={position}
+              r={satelliteRadius}
               color={`rgba(255, 255, 255, ${satellite.opacity})`}
             />
           </Fragment>
@@ -142,13 +182,15 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
 
       <Circle
         c={userPosition}
-        r={USER_RADIUS * 2.2}
-        color="rgba(255, 139, 223, 0.12)"
-      />
+        r={userRadius * 1.4}
+        color="rgba(255, 126, 218, 0.7)"
+      >
+        <BlurMask blur={userRadius * 1.5} style="normal" />
+      </Circle>
       <Circle
         c={userPosition}
-        r={USER_RADIUS}
-        color="#ff8bdf"
+        r={userRadius}
+        color="#ff7eda"
       />
     </Canvas>
   )
