@@ -149,9 +149,9 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           <Fragment key={satellite.passId}>
             <Circle
               c={position}
-              r={satelliteRadius * 1.35}
+              r={satelliteRadius * 1.05}
               color={`rgba(255, 255, 255, ${
-                satellite.opacity * 0.55
+                satellite.opacity * 0.28
               })`}
             >
               <BlurMask
@@ -161,13 +161,25 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             </Circle>
             <Circle
               c={position}
-              r={satelliteRadius * 1.1}
+              r={satelliteRadius * 1.03}
               color={`rgba(255, 255, 255, ${
-                satellite.opacity * 0.55
+                satellite.opacity * 0.5
               })`}
             >
               <BlurMask
-                blur={satelliteRadius * 0.55}
+                blur={satelliteRadius * 0.8}
+                style="normal"
+              />
+            </Circle>
+            <Circle
+              c={position}
+              r={satelliteRadius * 1.01}
+              color={`rgba(255, 255, 255, ${
+                satellite.opacity * 0.85
+              })`}
+            >
+              <BlurMask
+                blur={satelliteRadius * 0.42}
                 style="normal"
               />
             </Circle>
@@ -182,10 +194,24 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
 
       <Circle
         c={userPosition}
-        r={userRadius * 1.4}
-        color="rgba(255, 126, 218, 0.7)"
+        r={userRadius * 1.08}
+        color="rgba(255, 255, 255, 0.3)"
       >
-        <BlurMask blur={userRadius * 1.5} style="normal" />
+        <BlurMask blur={userRadius * 1.8} style="normal" />
+      </Circle>
+      <Circle
+        c={userPosition}
+        r={userRadius * 1.05}
+        color="rgba(255, 255, 255, 0.5)"
+      >
+        <BlurMask blur={userRadius * 1.05} style="normal" />
+      </Circle>
+      <Circle
+        c={userPosition}
+        r={userRadius * 1.02}
+        color="rgba(255, 250, 253, 0.8)"
+      >
+        <BlurMask blur={userRadius * 0.55} style="normal" />
       </Circle>
       <Circle
         c={userPosition}

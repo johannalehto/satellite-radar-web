@@ -4,6 +4,7 @@
   aspect-ratio: 5 / 6;
   overflow: hidden;
   background: #2c2c2c;
+  container-type: inline-size;
 }
 
 .radar-north-marker {
@@ -15,7 +16,7 @@
   justify-items: center;
   color: #dedede;
   font-family: 'Iosevka Charon Mono', monospace;
-  font-size: clamp(1.25rem, 3.4vw, 1.6rem);
+  font-size: clamp(0.875rem, 3.4cqi, 1.6rem);
   font-weight: 300;
   line-height: 1;
   pointer-events: none;
@@ -24,23 +25,18 @@
 
 .radar-north-arrow {
   position: relative;
-  width: 0;
-  height: 0;
-  margin-bottom: 0.6rem;
-  border-right: 1.2rem solid transparent;
-  border-bottom: 2rem solid #dedede;
-  border-left: 1.2rem solid transparent;
+  width: clamp(1.5rem, 4.8cqi, 2.4rem);
+  height: clamp(1.25rem, 4cqi, 2rem);
+  margin-bottom: clamp(0.3rem, 1.2cqi, 0.6rem);
+  background: #dedede;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
 }
 
 .radar-north-arrow::after {
   position: absolute;
-  top: 0.22rem;
-  left: -0.96rem;
-  width: 0;
-  height: 0;
-  border-right: 0.96rem solid transparent;
-  border-bottom: 1.6rem solid #2c2c2c;
-  border-left: 0.96rem solid transparent;
+  inset: clamp(0.1rem, 0.25cqi, 0.15rem);
+  background: #2c2c2c;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
   content: '';
 }
 
