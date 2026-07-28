@@ -20,9 +20,7 @@ function RadarPage() {
   const radarScene = buildRadarScene(satellitePasses, radarTimestampMs)
 
   return (
-    <main className="radar-page">
-      <h1>SATELLITES NOW</h1>
-
+    <section className="radar-page" aria-label="Satellite radar">
       {isLoading ? (
         <p className="loading">Loading satellites…</p>
       ) : error ? (
@@ -35,7 +33,7 @@ function RadarPage() {
           <SatellitePassList passes={satellitePasses} />
         </>
       )}
-    </main>
+    </section>
   )
 }
 

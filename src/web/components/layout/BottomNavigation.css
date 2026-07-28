@@ -1,0 +1,50 @@
+.bottom-navigation {
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  min-height: calc(4.5rem + env(safe-area-inset-bottom));
+  padding: 0.25rem 1.25rem env(safe-area-inset-bottom);
+  background: #292929;
+  border-top: 1px solid #242424;
+}
+
+.bottom-navigation-link {
+  display: grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  color: #666666;
+  border-radius: 0.5rem;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.bottom-navigation-link:hover {
+  color: #bcbcbc;
+}
+
+.bottom-navigation-link:focus-visible {
+  outline: 2px solid #f2f2f2;
+  outline-offset: -0.25rem;
+}
+
+.bottom-navigation-link.is-active {
+  color: #dedede;
+}
+
+.bottom-navigation-link svg {
+  width: 2rem;
+  height: 2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-navigation-link {
+    transition: none;
+  }
+}

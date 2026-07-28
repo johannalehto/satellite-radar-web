@@ -1,0 +1,23 @@
+.placeholder-page {
+  display: grid;
+  min-height: 100%;
+  padding: clamp(2rem, 10vw, 5rem) clamp(1.5rem, 8vw, 4rem);
+  align-items: center;
+}
+
+.placeholder-page > div {
+  max-width: 30rem;
+}
+
+.placeholder-page h1 {
+  margin: 0 0 1rem;
+  color: #f2f2f2;
+  font-size: clamp(1.5rem, 7vw, 2.5rem);
+  font-weight: 300;
+}
+
+.placeholder-page p {
+  margin: 0;
+  color: #a6a6a6;
+  line-height: 1.6;
+}
