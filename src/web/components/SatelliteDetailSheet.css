@@ -1,17 +1,33 @@
+.satellite-detail-backdrop {
+  position: fixed;
+  z-index: 19;
+  inset: 0;
+  width: min(100%, 720px);
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: default;
+}
+
 .satellite-detail-sheet {
   --detail-sheet-inline-padding: clamp(2.5rem, 10vw, 5.5rem);
   --sheet-drag-y: 0px;
 
-  position: absolute;
   z-index: 20;
-  inset: 25% 0 0;
+  position: fixed;
+  top: 25dvh;
+  bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  left: 50%;
+  width: min(100%, 720px);
   overflow: hidden;
   color: #bcbcbc;
   background: #242424;
   border: 1px solid #f2f2f2;
   border-bottom: 0;
   border-radius: 3rem 3rem 0 0;
-  transform: translateY(var(--sheet-drag-y));
+  transform: translate(-50%, var(--sheet-drag-y));
   transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
   animation: satellite-detail-enter
     650ms
@@ -155,17 +171,17 @@
 
 @keyframes satellite-detail-enter {
   from {
-    transform: translateY(100%);
+    transform: translate(-50%, 100%);
   }
 }
 
 @keyframes satellite-detail-exit {
   from {
-    transform: translateY(var(--sheet-drag-y));
+    transform: translate(-50%, var(--sheet-drag-y));
   }
 
   to {
-    transform: translateY(100%);
+    transform: translate(-50%, 100%);
   }
 }
 

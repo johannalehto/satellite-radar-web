@@ -1,4 +1,34 @@
 .satellite-pass-list {
+  min-width: 0;
+}
+
+.satellite-pass-list h2 {
+  margin: 0 0 2rem;
+  color: #f2f2f2;
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+}
+
+.satellite-pass-columns {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 1rem;
+  padding-bottom: 0.65rem;
+  color: #bcbcbc;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+}
+
+.satellite-pass-columns span:last-child {
+  min-width: 4.25rem;
+  text-align: center;
+}
+
+.satellite-pass-empty {
+  margin: 0;
+  padding: 1.5rem 0;
+  color: #727171;
+  border-bottom: 1px solid #555555;
+  font-size: 0.8rem;
 }

@@ -1,50 +1,64 @@
 import type { SatellitePass } from '../../domain/radar/models'
+import type { SatellitePassStatus } from '../../domain/radar/selectors/satellitePassStatus'
 import './SatellitePassCard.css'
 
 type SatellitePassCardProps = {
   pass: SatellitePass
+  status: SatellitePassStatus
+  timestampMs: number
+  onSelect: (pass: SatellitePass) => void
 }
 
-function formatDate(timestampMs: number) {
-  return new Date(timestampMs).toLocaleString()
+function formatDuration(durationMs: number) {
+  const totalSeconds = Math.max(
+    0,
+    Math.ceil(durationMs / 1_000),
+  )
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+
+  return `${minutes}:${String(seconds).padStart(2, '0')}`
 }
 
-function SatellitePassCard({ pass }: SatellitePassCardProps) {
+function getStatusDuration(
+  pass: SatellitePass,
+  status: SatellitePassStatus,
+  timestampMs: number,
+) {
+  if (status === 'approaching') {
+    return pass.visibleFromMs - timestampMs
+  }
+
+  if (status === 'visible-now') {
+    return pass.visibleUntilMs - timestampMs
+  }
+
+  return timestampMs - pass.visibleUntilMs
+}
+
+function SatellitePassCard({
+  pass,
+  status,
+  timestampMs,
+  onSelect,
+}: SatellitePassCardProps) {
+  const displayName = pass.owner?.code
+    ? `${pass.name}, ${pass.owner.code}`
+    : pass.name
+
   return (
-    <article className="satellite-pass-card">
-      <h2>{pass.name}</h2>
-
-      <dl className="satellite-details">
-        <div>
-          <dt>Object type</dt>
-          <dd>{pass.objectType ?? 'Unknown'}</dd>
-        </div>
-        <div>
-          <dt>Owner</dt>
-          <dd>{pass.owner?.name ?? 'Unknown'}</dd>
-        </div>
-        <div>
-          <dt>Maximum elevation</dt>
-          <dd>{Math.round(pass.maxElevationDeg)}°</dd>
-        </div>
-        <div>
-          <dt>Visible from</dt>
-          <dd>
-            <time dateTime={new Date(pass.visibleFromMs).toISOString()}>
-              {formatDate(pass.visibleFromMs)}
-            </time>
-          </dd>
-        </div>
-        <div>
-          <dt>Visible until</dt>
-          <dd>
-            <time dateTime={new Date(pass.visibleUntilMs).toISOString()}>
-              {formatDate(pass.visibleUntilMs)}
-            </time>
-          </dd>
-        </div>
-      </dl>
-    </article>
+    <button
+      className="satellite-pass-row"
+      type="button"
+      onClick={() => onSelect(pass)}
+    >
+      <p>{displayName}</p>
+      <strong>
+        {formatDuration(
+          getStatusDuration(pass, status, timestampMs),
+        )}
+      </strong>
+    </button>
   )
 }
 

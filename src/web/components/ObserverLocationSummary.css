@@ -1,0 +1,11 @@
+.observer-location-summary {
+  min-width: 0;
+  color: #727171;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.observer-location-summary p {
+  margin: 0;
+}

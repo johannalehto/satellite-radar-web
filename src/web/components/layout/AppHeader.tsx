@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import ObserverLocationSummary from '../ObserverLocationSummary'
 import './AppHeader.css'
 
 function padNumber(value: number) {
@@ -17,8 +19,20 @@ function formatTime(date: Date) {
   return `${padNumber(date.getHours())}:${padNumber(date.getMinutes())}`
 }
 
-function AppHeader() {
+type AppHeaderProps = {
+  latitude: number
+  longitude: number
+  locationName: string | null
+}
+
+function AppHeader({
+  latitude,
+  longitude,
+  locationName,
+}: AppHeaderProps) {
+  const location = useLocation()
   const [now, setNow] = useState(() => new Date())
+  const showObserverLocation = location.pathname !== '/'
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -37,6 +51,15 @@ function AppHeader() {
         <time dateTime={now.toISOString()}>{formatDate(now)}</time>
         <time dateTime={now.toISOString()}>{formatTime(now)}</time>
       </div>
+      {showObserverLocation && (
+        <div className="app-observer-location">
+          <ObserverLocationSummary
+            latitude={latitude}
+            longitude={longitude}
+            locationName={locationName}
+          />
+        </div>
+      )}
     </header>
   )
 }

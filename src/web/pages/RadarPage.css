@@ -7,22 +7,8 @@
 
 .radar-page-meta {
   display: flex;
-  gap: 1.5rem;
-  align-items: start;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 clamp(2rem, 15vw, 6.5rem) 0.5rem;
-}
-
-.radar-location {
-  min-width: 0;
-  color: #727171;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.75rem;
-  line-height: 1.55;
-}
-
-.radar-location p {
-  margin: 0;
 }
 
 .radar-label-toggle {

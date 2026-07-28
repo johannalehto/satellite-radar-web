@@ -26,8 +26,16 @@
   line-height: 1.2;
 }
 
+.app-observer-location {
+  margin-top: 2rem;
+}
+
 @media (max-height: 600px) {
   .app-header {
     padding-top: calc(1.75rem + env(safe-area-inset-top));
+  }
+
+  .app-observer-location {
+    margin-top: 1rem;
   }
 }

@@ -6,6 +6,7 @@ import {
   Routes,
 } from 'react-router-dom'
 import AppShell from './app/AppShell'
+import SatelliteDataLayout from './app/SatelliteDataLayout'
 import type { ObserverLocation } from './location/models'
 import LocationPage from './pages/LocationPage'
 import RadarPage from './pages/RadarPage'
@@ -25,7 +26,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppShell />}>
+        <Route
+          element={
+            <AppShell
+              latitude={latitude}
+              longitude={longitude}
+              locationName={observerLocation?.name ?? null}
+            />
+          }
+        >
           <Route
             index
             element={
@@ -35,16 +44,20 @@ function App() {
             }
           />
           <Route
-            path="radar"
             element={
-              <RadarPage
+              <SatelliteDataLayout
                 latitude={latitude}
                 longitude={longitude}
                 locationName={observerLocation?.name ?? null}
               />
             }
-          />
-          <Route path="satellites" element={<SatelliteListPage />} />
+          >
+            <Route path="radar" element={<RadarPage />} />
+            <Route
+              path="satellites"
+              element={<SatelliteListPage />}
+            />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

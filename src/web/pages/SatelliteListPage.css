@@ -1,0 +1,35 @@
+.satellite-list-page {
+  width: 100%;
+  min-height: 100%;
+}
+
+.satellite-list-panel {
+  display: grid;
+  gap: clamp(4.5rem, 10vh, 6.5rem);
+  padding:
+    clamp(1.5rem, 4vh, 2.5rem)
+    clamp(2rem, 10vw, 5.5rem)
+    4rem;
+}
+
+.satellite-list-status {
+  margin: 3rem clamp(2rem, 15vw, 6.5rem);
+  color: #a6a6a6;
+}
+
+.satellite-list-status.is-error {
+  color: #ff8f8f;
+}
+
+.satellite-refresh-status {
+  margin: 0 0 -3rem;
+  color: #727171;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.625rem;
+}
+
+@media (max-width: 420px) {
+  .satellite-list-panel {
+    padding-inline: 2rem;
+  }
+}

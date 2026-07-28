@@ -14,4 +14,5 @@ export const radarClockOptions: RadarClockOptions = useRadarFixture
     }
   : {
       initialTimestampMs: Date.now(),
+      useSystemClock: true,
     }
