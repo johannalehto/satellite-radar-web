@@ -18,6 +18,7 @@ const DEFAULT_RADAR_LONGITUDE = 139.5341
 function App() {
   const [observerLocation, setObserverLocation] =
     useState<ObserverLocation | null>(null)
+  const [showRadarLabels, setShowRadarLabels] = useState(false)
   const latitude =
     observerLocation?.latitude ?? DEFAULT_RADAR_LATITUDE
   const longitude =
@@ -32,6 +33,8 @@ function App() {
               latitude={latitude}
               longitude={longitude}
               locationName={observerLocation?.name ?? null}
+              showRadarLabels={showRadarLabels}
+              onShowRadarLabelsChange={setShowRadarLabels}
             />
           }
         >
@@ -52,7 +55,10 @@ function App() {
               />
             }
           >
-            <Route path="radar" element={<RadarPage />} />
+            <Route
+              path="radar"
+              element={<RadarPage showLabels={showRadarLabels} />}
+            />
             <Route
               path="satellites"
               element={<SatelliteListPage />}

@@ -1,7 +1,4 @@
-import {
-  useMemo,
-  useState,
-} from 'react'
+import { useMemo } from 'react'
 import { buildRadarScene } from '../../domain/radar/calculations/buildRadarScene'
 import { useRadarClock } from '../../radar/hooks/useRadarClock'
 import { useSatelliteData } from '../app/useSatelliteData'
@@ -11,8 +8,11 @@ import { radarClockOptions } from '../config/radarTimestamp'
 import { useSatelliteDetailSelection } from '../hooks/useSatelliteDetailSelection'
 import './RadarPage.css'
 
-function RadarPage() {
-  const [showLabels, setShowLabels] = useState(false)
+type RadarPageProps = {
+  showLabels: boolean
+}
+
+function RadarPage({ showLabels }: RadarPageProps) {
   const {
     selectedPassId,
     isDetailSheetClosing,
@@ -40,18 +40,6 @@ function RadarPage() {
 
   return (
     <section className="radar-page" aria-label="Satellite radar">
-      <div className="radar-page-meta">
-        <label className="radar-label-toggle">
-          <span>DISPLAY NAMES</span>
-          <input
-            type="checkbox"
-            checked={showLabels}
-            onChange={(event) => setShowLabels(event.target.checked)}
-          />
-          <span className="radar-label-toggle-track" aria-hidden="true" />
-        </label>
-      </div>
-
       {isLoading ? (
         <p className="loading">Loading satellites…</p>
       ) : error ? (

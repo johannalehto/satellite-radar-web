@@ -23,12 +23,16 @@ type AppHeaderProps = {
   latitude: number
   longitude: number
   locationName: string | null
+  showRadarLabels: boolean
+  onShowRadarLabelsChange: (showLabels: boolean) => void
 }
 
 function AppHeader({
   latitude,
   longitude,
   locationName,
+  showRadarLabels,
+  onShowRadarLabelsChange,
 }: AppHeaderProps) {
   const location = useLocation()
   const [now, setNow] = useState(() => new Date())
@@ -52,12 +56,28 @@ function AppHeader({
         <time dateTime={now.toISOString()}>{formatTime(now)}</time>
       </div>
       {showObserverLocation && (
-        <div className="app-observer-location">
+        <div className="app-header-meta">
           <ObserverLocationSummary
             latitude={latitude}
             longitude={longitude}
             locationName={locationName}
           />
+          {location.pathname === '/radar' && (
+            <label className="radar-label-toggle">
+              <span>DISPLAY NAMES</span>
+              <input
+                type="checkbox"
+                checked={showRadarLabels}
+                onChange={(event) =>
+                  onShowRadarLabelsChange(event.target.checked)
+                }
+              />
+              <span
+                className="radar-label-toggle-track"
+                aria-hidden="true"
+              />
+            </label>
+          )}
         </div>
       )}
     </header>
