@@ -1,13 +1,33 @@
 .app-header {
   padding:
-    calc(2.25rem + env(safe-area-inset-top))
-    clamp(1.5rem, 8vw, 4rem)
-    1.5rem;
+    calc(3rem + env(safe-area-inset-top))
+    clamp(2rem, 15vw, 6.5rem)
+    1rem;
 }
 
 .app-title {
   margin: 0;
-  color: #f2f2f2;
-  font-size: clamp(1.2rem, 5vw, 1.7rem);
-  letter-spacing: 0.12em;
+  color: #ffffff;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  line-height: 1.25;
+}
+
+.app-date-time {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.8rem;
+  color: #727171;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+@media (max-height: 600px) {
+  .app-header {
+    padding-top: calc(1.75rem + env(safe-area-inset-top));
+  }
 }

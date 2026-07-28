@@ -7,13 +7,15 @@ import { radarClockOptions } from '../config/radarTimestamp'
 import { visibleSatellitesLoader } from '../config/visibleSatellitesLoader'
 import './RadarPage.css'
 
-const RADAR_LATITUDE = 36.3112
-const RADAR_LONGITUDE = 139.5341
+type RadarPageProps = {
+  latitude: number
+  longitude: number
+}
 
-function RadarPage() {
+function RadarPage({ latitude, longitude }: RadarPageProps) {
   const { satellitePasses, isLoading, error } = useVisibleSatellites(
-    RADAR_LATITUDE,
-    RADAR_LONGITUDE,
+    latitude,
+    longitude,
     visibleSatellitesLoader,
   )
   const radarTimestampMs = useRadarClock(radarClockOptions)
