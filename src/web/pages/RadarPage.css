@@ -1,12 +1,98 @@
 .radar-page {
+  position: relative;
   width: 100%;
-  padding: 0 1rem 2rem;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.radar-page-meta {
+  display: flex;
+  gap: 1.5rem;
+  align-items: start;
+  justify-content: space-between;
+  padding: 0 clamp(2rem, 15vw, 6.5rem) 0.5rem;
+}
+
+.radar-location {
+  min-width: 0;
+  color: #727171;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.radar-location p {
+  margin: 0;
+}
+
+.radar-label-toggle {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  gap: 0.55rem;
+  justify-items: center;
+  color: #727171;
+  font-size: 0.625rem;
+  cursor: pointer;
+}
+
+.radar-label-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.radar-label-toggle-track {
+  position: relative;
+  display: block;
+  width: 3.75rem;
+  height: 1.75rem;
+  border: 1px solid #dedede;
+  border-radius: 999px;
+}
+
+.radar-label-toggle-track::after {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.375rem;
+  height: 1.375rem;
+  background: #dedede;
+  border-radius: 50%;
+  content: '';
+  transition: transform 160ms ease;
+}
+
+.radar-label-toggle input:checked + .radar-label-toggle-track {
+  background: #727171;
+}
+
+.radar-label-toggle
+  input:checked
+  + .radar-label-toggle-track::after {
+  transform: translateX(1.95rem);
+}
+
+.radar-label-toggle
+  input:focus-visible
+  + .radar-label-toggle-track {
+  outline: 2px solid #ffffff;
+  outline-offset: 0.2rem;
 }
 
 .loading {
+  margin: 3rem clamp(2rem, 15vw, 6.5rem);
   color: #a6a6a6;
 }
 
 .error {
+  margin: 3rem clamp(2rem, 15vw, 6.5rem);
   color: #ff8f8f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-label-toggle-track::after {
+    transition: none;
+  }
 }

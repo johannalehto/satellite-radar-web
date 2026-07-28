@@ -7,32 +7,26 @@ import {
   LinearGradient,
   vec,
 } from '@shopify/react-native-skia'
-import type { NormalizedRadarPoint } from '../../domain/radar/calculations/projectToRadarPoint'
 import type {
   RadarCanvasProps,
-  RadarViewport,
 } from './types'
+import {
+  projectToViewportPoint,
+  RADAR_RADIUS_RATIO,
+} from './projectToViewportPoint'
 
-const RADAR_RADIUS_RATIO = 0.4
 const SATELLITE_RADIUS_RATIO = 0.0105
 const USER_RADIUS_RATIO = 0.0052
 const TICK_HALF_LENGTH_RATIO = 0.021
 const VERTICAL_GRID_POSITIONS = [0.08, 0.34, 0.59, 0.85]
 const HORIZONTAL_GRID_POSITIONS = [0.3, 0.52, 0.74]
 
-function toViewportPoint(
-  point: NormalizedRadarPoint,
-  viewport: RadarViewport,
+function toSkiaPoint(
+  point: Parameters<typeof projectToViewportPoint>[0],
+  viewport: Parameters<typeof projectToViewportPoint>[1],
 ) {
-  const centerX = viewport.width / 2
-  const centerY = viewport.height / 2
-  const radarRadius =
-    Math.min(viewport.width, viewport.height) * RADAR_RADIUS_RATIO
-
-  return vec(
-    centerX + point.x * radarRadius,
-    centerY + point.y * radarRadius,
-  )
+  const viewportPoint = projectToViewportPoint(point, viewport)
+  return vec(viewportPoint.x, viewportPoint.y)
 }
 
 function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
@@ -42,7 +36,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
   const satelliteRadius = viewport.width * SATELLITE_RADIUS_RATIO
   const userRadius = viewport.width * USER_RADIUS_RATIO
   const tickHalfLength = viewport.width * TICK_HALF_LENGTH_RATIO
-  const userPosition = toViewportPoint(scene.userPosition, viewport)
+  const userPosition = toSkiaPoint(scene.userPosition, viewport)
 
   const cardinalTicks = [
     {
@@ -92,11 +86,11 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           return null
         }
 
-        const lineStart = toViewportPoint(
+        const lineStart = toSkiaPoint(
           satellite.trajectory.lineStart,
           viewport,
         )
-        const lineEnd = toViewportPoint(
+        const lineEnd = toSkiaPoint(
           satellite.trajectory.lineEnd,
           viewport,
         )
@@ -143,7 +137,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       ))}
 
       {scene.satellites.map((satellite) => {
-        const position = toViewportPoint(satellite.position, viewport)
+        const position = toSkiaPoint(satellite.position, viewport)
 
         return (
           <Fragment key={satellite.passId}>

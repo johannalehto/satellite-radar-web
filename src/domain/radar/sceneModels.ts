@@ -6,6 +6,7 @@ export type RadarSatelliteDot = {
   passId: SatellitePassId
   satelliteId: string
   name: string
+  ownerCode: string | null
   position: NormalizedRadarPoint
   trajectory: StraightRadarTrajectory | null
   opacity: number

@@ -40,6 +40,7 @@ function App() {
               <RadarPage
                 latitude={latitude}
                 longitude={longitude}
+                locationName={observerLocation?.name ?? null}
               />
             }
           />

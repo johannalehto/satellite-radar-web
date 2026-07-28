@@ -59,6 +59,7 @@ export function buildRadarScene(
         passId: pass.passId,
         satelliteId: pass.satelliteId,
         name: pass.name,
+        ownerCode: pass.owner?.code ?? null,
         position: displayPosition,
         trajectory,
         opacity: Math.min(fadeInProgress, fadeOutProgress),
