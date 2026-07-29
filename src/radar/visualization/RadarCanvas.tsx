@@ -4,7 +4,6 @@ import {
   Canvas,
   Circle,
   Line,
-  LinearGradient,
   vec,
 } from '@shopify/react-native-skia'
 import type {
@@ -16,7 +15,9 @@ import {
 } from './projectToViewportPoint'
 
 const SATELLITE_RADIUS_RATIO = 0.0105
-const USER_RADIUS_RATIO = 0.0052
+const USER_MARKER_RADIUS = 4.5
+const USER_MARKER_TICK_INNER_RADIUS = 3
+const USER_MARKER_TICK_OUTER_RADIUS = 6
 const TICK_HALF_LENGTH_RATIO = 0.021
 const VERTICAL_GRID_POSITIONS = [0.08, 0.34, 0.59, 0.85]
 const HORIZONTAL_GRID_POSITIONS = [0.3, 0.52, 0.74]
@@ -34,15 +35,52 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
   const radarRadius =
     Math.min(viewport.width, viewport.height) * RADAR_RADIUS_RATIO
   const satelliteRadius = viewport.width * SATELLITE_RADIUS_RATIO
-  const userRadius = viewport.width * USER_RADIUS_RATIO
   const tickHalfLength = viewport.width * TICK_HALF_LENGTH_RATIO
   const userPosition = toSkiaPoint(scene.userPosition, viewport)
+  const userMarkerTicks = [
+    {
+      start: vec(
+        userPosition.x,
+        userPosition.y - USER_MARKER_TICK_INNER_RADIUS,
+      ),
+      end: vec(
+        userPosition.x,
+        userPosition.y - USER_MARKER_TICK_OUTER_RADIUS,
+      ),
+    },
+    {
+      start: vec(
+        userPosition.x + USER_MARKER_TICK_INNER_RADIUS,
+        userPosition.y,
+      ),
+      end: vec(
+        userPosition.x + USER_MARKER_TICK_OUTER_RADIUS,
+        userPosition.y,
+      ),
+    },
+    {
+      start: vec(
+        userPosition.x,
+        userPosition.y + USER_MARKER_TICK_INNER_RADIUS,
+      ),
+      end: vec(
+        userPosition.x,
+        userPosition.y + USER_MARKER_TICK_OUTER_RADIUS,
+      ),
+    },
+    {
+      start: vec(
+        userPosition.x - USER_MARKER_TICK_INNER_RADIUS,
+        userPosition.y,
+      ),
+      end: vec(
+        userPosition.x - USER_MARKER_TICK_OUTER_RADIUS,
+        userPosition.y,
+      ),
+    },
+  ]
 
   const cardinalTicks = [
-    {
-      start: vec(center.x, center.y - radarRadius - tickHalfLength),
-      end: vec(center.x, center.y - radarRadius + tickHalfLength),
-    },
     {
       start: vec(center.x + radarRadius - tickHalfLength, center.y),
       end: vec(center.x + radarRadius + tickHalfLength, center.y),
@@ -65,10 +103,10 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       {VERTICAL_GRID_POSITIONS.map((position) => (
         <Line
           key={`vertical-${position}`}
-          p1={vec(viewport.width * position, 0)}
-          p2={vec(viewport.width * position, viewport.height)}
-          color="#343434"
-          strokeWidth={2}
+          p1={vec(viewport.width * position, viewport.height * 0.13)}
+          p2={vec(viewport.width * position, viewport.height * 0.94)}
+          color="rgba(92, 92, 92, 0.1)"
+          strokeWidth={1}
         />
       ))}
       {HORIZONTAL_GRID_POSITIONS.map((position) => (
@@ -76,8 +114,8 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           key={`horizontal-${position}`}
           p1={vec(0, viewport.height * position)}
           p2={vec(viewport.width, viewport.height * position)}
-          color="#343434"
-          strokeWidth={2}
+          color="rgba(92, 92, 92, 0.1)"
+          strokeWidth={1}
         />
       ))}
 
@@ -101,20 +139,9 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             key={`trajectory-${satellite.passId}`}
             p1={lineStart}
             p2={lineEnd}
+            color={`rgba(242, 242, 242, ${trajectoryOpacity})`}
             strokeWidth={0.4}
-          >
-            <LinearGradient
-              start={lineStart}
-              end={lineEnd}
-              colors={[
-                'rgba(242, 242, 242, 0)',
-                `rgba(242, 242, 242, ${trajectoryOpacity})`,
-                `rgba(242, 242, 242, ${trajectoryOpacity})`,
-                'rgba(242, 242, 242, 0)',
-              ]}
-              positions={[0, 0.16, 0.84, 1]}
-            />
-          </Line>
+          />
         )
       })}
 
@@ -143,25 +170,25 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           <Fragment key={satellite.passId}>
             <Circle
               c={position}
-              r={satelliteRadius * 1.05}
+              r={satelliteRadius * 1.1}
               color={`rgba(255, 255, 255, ${
-                satellite.opacity * 0.28
+                satellite.opacity * 0.34
               })`}
             >
               <BlurMask
-                blur={satelliteRadius * 1.35}
+                blur={satelliteRadius * 1.8}
                 style="normal"
               />
             </Circle>
             <Circle
               c={position}
-              r={satelliteRadius * 1.03}
+              r={satelliteRadius * 1.06}
               color={`rgba(255, 255, 255, ${
-                satellite.opacity * 0.5
+                satellite.opacity * 0.55
               })`}
             >
               <BlurMask
-                blur={satelliteRadius * 0.8}
+                blur={satelliteRadius}
                 style="normal"
               />
             </Circle>
@@ -188,30 +215,20 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
 
       <Circle
         c={userPosition}
-        r={userRadius * 1.08}
-        color="rgba(255, 255, 255, 0.3)"
-      >
-        <BlurMask blur={userRadius * 1.8} style="normal" />
-      </Circle>
-      <Circle
-        c={userPosition}
-        r={userRadius * 1.05}
-        color="rgba(255, 255, 255, 0.5)"
-      >
-        <BlurMask blur={userRadius * 1.05} style="normal" />
-      </Circle>
-      <Circle
-        c={userPosition}
-        r={userRadius * 1.02}
-        color="rgba(255, 250, 253, 0.8)"
-      >
-        <BlurMask blur={userRadius * 0.55} style="normal" />
-      </Circle>
-      <Circle
-        c={userPosition}
-        r={userRadius}
-        color="#ff7eda"
+        r={USER_MARKER_RADIUS}
+        color="#fdf5f5"
+        style="stroke"
+        strokeWidth={1}
       />
+      {userMarkerTicks.map((tick, index) => (
+        <Line
+          key={`user-marker-tick-${index}`}
+          p1={tick.start}
+          p2={tick.end}
+          color="#fdf5f5"
+          strokeWidth={1}
+        />
+      ))}
     </Canvas>
   )
 }

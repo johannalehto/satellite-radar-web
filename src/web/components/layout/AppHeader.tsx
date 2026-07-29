@@ -48,8 +48,12 @@ function AppHeader({
     }
   }, [])
 
+  const isRadarPage = location.pathname === '/radar'
+
   return (
-    <header className="app-header">
+    <header
+      className={`app-header${isRadarPage ? ' app-header--radar' : ''}`}
+    >
       <p className="app-title">SATELLITES NOW</p>
       <div className="app-date-time">
         <time dateTime={now.toISOString()}>{formatDate(now)}</time>
@@ -62,7 +66,7 @@ function AppHeader({
             longitude={longitude}
             locationName={locationName}
           />
-          {location.pathname === '/radar' && (
+          {isRadarPage && (
             <label className="radar-label-toggle">
               <span>DISPLAY NAMES</span>
               <input

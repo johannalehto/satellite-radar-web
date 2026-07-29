@@ -1,7 +1,7 @@
 import type { NormalizedRadarPoint } from '../../domain/radar/calculations/projectToRadarPoint'
 import type { RadarViewport } from './types'
 
-export const RADAR_RADIUS_RATIO = 0.4
+export const RADAR_RADIUS_RATIO = 0.392
 
 export type RadarViewportPoint = {
   x: number

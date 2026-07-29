@@ -10,13 +10,13 @@
 .radar-north-marker {
   position: absolute;
   z-index: 2;
-  top: 6.5%;
+  top: 7.35%;
   left: 50%;
   display: grid;
   justify-items: center;
   color: #dedede;
   font-family: 'Iosevka Charon Mono', monospace;
-  font-size: clamp(0.875rem, 3.4cqi, 1.6rem);
+  font-size: 16px;
   font-weight: 300;
   line-height: 1;
   pointer-events: none;
@@ -24,20 +24,11 @@
 }
 
 .radar-north-arrow {
-  position: relative;
-  width: clamp(1.5rem, 4.8cqi, 2.4rem);
-  height: clamp(1.25rem, 4cqi, 2rem);
-  margin-bottom: clamp(0.3rem, 1.2cqi, 0.6rem);
-  background: #dedede;
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-}
-
-.radar-north-arrow::after {
-  position: absolute;
-  inset: clamp(0.1rem, 0.25cqi, 0.15rem);
-  background: #2c2c2c;
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  content: '';
+  display: block;
+  width: 17px;
+  height: 15px;
+  margin-bottom: 5px;
+  overflow: visible;
 }
 
 .radar-interaction-layer {

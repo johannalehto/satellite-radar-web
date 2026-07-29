@@ -70,7 +70,18 @@ function RadarView({
       onClick={onBackgroundClick}
     >
       <div className="radar-north-marker" aria-hidden="true">
-        <span className="radar-north-arrow" />
+        <svg
+          className="radar-north-arrow"
+          viewBox="0 0 17 15"
+          fill="none"
+        >
+          <path
+            d="M8.5 0.5 L16.5 14.5 L0.5 14.5 Z"
+            stroke="currentColor"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
         <span>N</span>
       </div>
 
