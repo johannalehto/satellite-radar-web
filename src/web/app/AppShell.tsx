@@ -9,6 +9,8 @@ type AppShellProps = {
   locationName: string | null
   showRadarLabels: boolean
   onShowRadarLabelsChange: (showLabels: boolean) => void
+  useGreenRadarTheme: boolean
+  onGreenRadarThemeChange: (useGreenTheme: boolean) => void
 }
 
 function AppShell({
@@ -17,6 +19,8 @@ function AppShell({
   locationName,
   showRadarLabels,
   onShowRadarLabelsChange,
+  useGreenRadarTheme,
+  onGreenRadarThemeChange,
 }: AppShellProps) {
   return (
     <div className="app-shell">
@@ -26,6 +30,8 @@ function AppShell({
         locationName={locationName}
         showRadarLabels={showRadarLabels}
         onShowRadarLabelsChange={onShowRadarLabelsChange}
+        useGreenRadarTheme={useGreenRadarTheme}
+        onGreenRadarThemeChange={onGreenRadarThemeChange}
       />
       <main className="app-content">
         <Outlet />

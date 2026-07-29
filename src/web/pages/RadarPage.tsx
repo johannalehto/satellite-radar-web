@@ -10,9 +10,10 @@ import './RadarPage.css'
 
 type RadarPageProps = {
   showLabels: boolean
+  useGreenTheme: boolean
 }
 
-function RadarPage({ showLabels }: RadarPageProps) {
+function RadarPage({ showLabels, useGreenTheme }: RadarPageProps) {
   const {
     selectedPassId,
     isDetailSheetClosing,
@@ -51,6 +52,7 @@ function RadarPage({ showLabels }: RadarPageProps) {
           scene={radarScene}
           selectedPassId={selectedPassId}
           showLabels={showLabels}
+          useGreenTheme={useGreenTheme}
           onSelectSatellite={selectSatellite}
           onBackgroundClick={closeDetailSheet}
         />
