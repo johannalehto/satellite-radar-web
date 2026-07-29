@@ -1,0 +1,22 @@
+app = "satellite-radar-web"
+primary_region = "nrt"
+
+[build]
+  dockerfile = "Dockerfile"
+
+  [build.args]
+    VITE_API_BASE_URL = "https://satellite-radar.fly.dev"
+    VITE_USE_RADAR_FIXTURE = "false"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
