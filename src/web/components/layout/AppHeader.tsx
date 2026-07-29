@@ -25,6 +25,8 @@ type AppHeaderProps = {
   locationName: string | null
   showRadarLabels: boolean
   onShowRadarLabelsChange: (showLabels: boolean) => void
+  useGreenRadarTheme: boolean
+  onGreenRadarThemeChange: (useGreenTheme: boolean) => void
 }
 
 function AppHeader({
@@ -33,6 +35,8 @@ function AppHeader({
   locationName,
   showRadarLabels,
   onShowRadarLabelsChange,
+  useGreenRadarTheme,
+  onGreenRadarThemeChange,
 }: AppHeaderProps) {
   const location = useLocation()
   const [now, setNow] = useState(() => new Date())
@@ -67,20 +71,36 @@ function AppHeader({
             locationName={locationName}
           />
           {isRadarPage && (
-            <label className="radar-label-toggle">
-              <span>DISPLAY NAMES</span>
-              <input
-                type="checkbox"
-                checked={showRadarLabels}
-                onChange={(event) =>
-                  onShowRadarLabelsChange(event.target.checked)
-                }
-              />
-              <span
-                className="radar-label-toggle-track"
-                aria-hidden="true"
-              />
-            </label>
+            <div className="radar-controls" aria-label="Radar settings">
+              <label className="radar-option-toggle">
+                <span>DISPLAY NAMES</span>
+                <input
+                  type="checkbox"
+                  checked={showRadarLabels}
+                  onChange={(event) =>
+                    onShowRadarLabelsChange(event.target.checked)
+                  }
+                />
+                <span
+                  className="radar-option-toggle-track"
+                  aria-hidden="true"
+                />
+              </label>
+              <label className="radar-option-toggle radar-theme-toggle">
+                <span>RADAR GREEN</span>
+                <input
+                  type="checkbox"
+                  checked={useGreenRadarTheme}
+                  onChange={(event) =>
+                    onGreenRadarThemeChange(event.target.checked)
+                  }
+                />
+                <span
+                  className="radar-option-toggle-track"
+                  aria-hidden="true"
+                />
+              </label>
+            </div>
           )}
         </div>
       )}

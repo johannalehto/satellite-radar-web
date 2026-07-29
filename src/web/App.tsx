@@ -19,6 +19,8 @@ function App() {
   const [observerLocation, setObserverLocation] =
     useState<ObserverLocation | null>(null)
   const [showRadarLabels, setShowRadarLabels] = useState(false)
+  const [useGreenRadarTheme, setUseGreenRadarTheme] =
+    useState(false)
   const latitude =
     observerLocation?.latitude ?? DEFAULT_RADAR_LATITUDE
   const longitude =
@@ -35,6 +37,8 @@ function App() {
               locationName={observerLocation?.name ?? null}
               showRadarLabels={showRadarLabels}
               onShowRadarLabelsChange={setShowRadarLabels}
+              useGreenRadarTheme={useGreenRadarTheme}
+              onGreenRadarThemeChange={setUseGreenRadarTheme}
             />
           }
         >
@@ -57,7 +61,12 @@ function App() {
           >
             <Route
               path="radar"
-              element={<RadarPage showLabels={showRadarLabels} />}
+              element={
+                <RadarPage
+                  showLabels={showRadarLabels}
+                  useGreenTheme={useGreenRadarTheme}
+                />
+              }
             />
             <Route
               path="satellites"

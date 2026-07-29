@@ -47,26 +47,32 @@
   line-height: 1.45;
 }
 
-.radar-label-toggle {
+.radar-controls {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.75rem;
+  margin-right: -1rem;
+}
+
+.radar-option-toggle {
   position: relative;
   display: grid;
-  flex: 0 0 auto;
   gap: 0.55rem;
   justify-items: end;
-  margin-right: -1rem;
   color: #727171;
   font-size: 0.625rem;
   cursor: pointer;
+  white-space: nowrap;
 }
 
-.radar-label-toggle input {
+.radar-option-toggle input {
   position: absolute;
   width: 1px;
   height: 1px;
   opacity: 0;
 }
 
-.radar-label-toggle-track {
+.radar-option-toggle-track {
   position: relative;
   display: block;
   width: 3.4375rem;
@@ -75,7 +81,7 @@
   border-radius: 999px;
 }
 
-.radar-label-toggle-track::after {
+.radar-option-toggle-track::after {
   position: absolute;
   top: 0.0625rem;
   left: 0.0625rem;
@@ -87,21 +93,53 @@
   transition: transform 160ms ease;
 }
 
-.radar-label-toggle input:checked + .radar-label-toggle-track {
+.radar-option-toggle input:checked + .radar-option-toggle-track {
   background: #727171;
 }
 
-.radar-label-toggle
+.radar-option-toggle
   input:checked
-  + .radar-label-toggle-track::after {
+  + .radar-option-toggle-track::after {
   transform: translateX(2.1875rem);
 }
 
-.radar-label-toggle
+.radar-option-toggle
   input:focus-visible
-  + .radar-label-toggle-track {
+  + .radar-option-toggle-track {
   outline: 2px solid #ffffff;
   outline-offset: 0.2rem;
+}
+
+.radar-theme-toggle input:checked + .radar-option-toggle-track {
+  background: #387f46;
+  border-color: #75ff8d;
+}
+
+.radar-theme-toggle
+  input:checked
+  + .radar-option-toggle-track::after {
+  background: #75ff8d;
+}
+
+@media (max-width: 480px) {
+  .radar-controls {
+    gap: 0.5rem;
+    margin-right: 0;
+  }
+
+  .radar-option-toggle {
+    font-size: 0.5625rem;
+  }
+
+  .radar-option-toggle-track {
+    width: 2.75rem;
+  }
+
+  .radar-option-toggle
+    input:checked
+    + .radar-option-toggle-track::after {
+    transform: translateX(1.5rem);
+  }
 }
 
 @media (max-height: 600px) {
@@ -120,7 +158,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .radar-label-toggle-track::after {
+  .radar-option-toggle-track::after {
     transition: none;
   }
 }

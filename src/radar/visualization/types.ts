@@ -8,4 +8,5 @@ export type RadarViewport = {
 export type RadarCanvasProps = {
   scene: RadarScene
   viewport: RadarViewport
+  useGreenTheme: boolean
 }

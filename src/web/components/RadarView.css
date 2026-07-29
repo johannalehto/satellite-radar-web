@@ -1,10 +1,20 @@
 .radar-view {
+  --radar-color: #f2f2f2;
+  --radar-muted-color: #dedede;
+  --radar-background: #2c2c2c;
   position: relative;
   width: 100%;
   aspect-ratio: 5 / 6;
   overflow: hidden;
-  background: #2c2c2c;
+  background: var(--radar-background);
   container-type: inline-size;
+  transition: background-color 180ms ease;
+}
+
+.radar-view--green {
+  --radar-color: #75ff8d;
+  --radar-muted-color: #65d879;
+  --radar-background: #202b22;
 }
 
 .radar-north-marker {
@@ -14,7 +24,7 @@
   left: 50%;
   display: grid;
   justify-items: center;
-  color: #dedede;
+  color: var(--radar-muted-color);
   font-family: 'Iosevka Charon Mono', monospace;
   font-size: 16px;
   font-weight: 300;
@@ -46,7 +56,7 @@
   background: transparent;
   border: 0;
   border-radius: 50%;
-  color: #f2f2f2;
+  color: var(--radar-color);
   cursor: pointer;
   pointer-events: auto;
   transform: translate(-50%, -50%);
@@ -62,11 +72,11 @@
 
 .radar-satellite-target:hover::after,
 .radar-satellite-target.is-selected::after {
-  border-color: rgba(242, 242, 242, 0.55);
+  border-color: color-mix(in srgb, var(--radar-color) 55%, transparent);
 }
 
 .radar-satellite-target:focus-visible {
-  outline: 2px solid #f2f2f2;
+  outline: 2px solid var(--radar-color);
   outline-offset: 0.1rem;
 }
 
@@ -74,14 +84,14 @@
   position: absolute;
   top: calc(100% - 0.2rem);
   left: 50%;
-  color: #f2f2f2;
+  color: var(--radar-color);
   font-family: 'Roboto Mono', monospace;
   font-size: clamp(0.65rem, 2.8cqi, 1rem);
   font-weight: 400;
   line-height: 1.2;
   text-shadow:
-    0 1px 0.25rem #2c2c2c,
-    0 0 0.5rem #2c2c2c;
+    0 1px 0.25rem var(--radar-background),
+    0 0 0.5rem var(--radar-background);
   white-space: nowrap;
   transform: translateX(-50%);
 }
@@ -92,4 +102,10 @@
   margin: 0;
   place-items: center;
   color: #8f8f8f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-view {
+    transition: none;
+  }
 }

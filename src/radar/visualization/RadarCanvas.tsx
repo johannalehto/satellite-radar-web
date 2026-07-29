@@ -30,7 +30,17 @@ function toSkiaPoint(
   return vec(viewportPoint.x, viewportPoint.y)
 }
 
-function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
+function RadarCanvas({
+  scene,
+  viewport,
+  useGreenTheme,
+}: RadarCanvasProps) {
+  const primaryRgb = useGreenTheme ? '117, 255, 141' : '242, 242, 242'
+  const satelliteRgb = useGreenTheme ? '117, 255, 141' : '255, 255, 255'
+  const markerColor = useGreenTheme ? '#75ff8d' : '#fdf5f5'
+  const gridColor = useGreenTheme
+    ? 'rgba(81, 166, 97, 0.14)'
+    : 'rgba(92, 92, 92, 0.1)'
   const center = vec(viewport.width / 2, viewport.height / 2)
   const radarRadius =
     Math.min(viewport.width, viewport.height) * RADAR_RADIUS_RATIO
@@ -105,7 +115,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           key={`vertical-${position}`}
           p1={vec(viewport.width * position, viewport.height * 0.13)}
           p2={vec(viewport.width * position, viewport.height * 0.94)}
-          color="rgba(92, 92, 92, 0.1)"
+          color={gridColor}
           strokeWidth={1}
         />
       ))}
@@ -114,7 +124,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           key={`horizontal-${position}`}
           p1={vec(0, viewport.height * position)}
           p2={vec(viewport.width, viewport.height * position)}
-          color="rgba(92, 92, 92, 0.1)"
+          color={gridColor}
           strokeWidth={1}
         />
       ))}
@@ -139,7 +149,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             key={`trajectory-${satellite.passId}`}
             p1={lineStart}
             p2={lineEnd}
-            color={`rgba(242, 242, 242, ${trajectoryOpacity})`}
+            color={`rgba(${primaryRgb}, ${trajectoryOpacity})`}
             strokeWidth={0.4}
           />
         )
@@ -148,7 +158,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       <Circle
         c={center}
         r={radarRadius}
-        color="rgba(222, 222, 222, 0.85)"
+        color={`rgba(${primaryRgb}, 0.85)`}
         style="stroke"
         strokeWidth={0.2}
       />
@@ -158,7 +168,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           key={index}
           p1={tick.start}
           p2={tick.end}
-          color="#f2f2f2"
+          color={`rgb(${primaryRgb})`}
           strokeWidth={1.5}
         />
       ))}
@@ -171,7 +181,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             <Circle
               c={position}
               r={satelliteRadius * 1.1}
-              color={`rgba(255, 255, 255, ${
+              color={`rgba(${satelliteRgb}, ${
                 satellite.opacity * 0.34
               })`}
             >
@@ -183,7 +193,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             <Circle
               c={position}
               r={satelliteRadius * 1.06}
-              color={`rgba(255, 255, 255, ${
+              color={`rgba(${satelliteRgb}, ${
                 satellite.opacity * 0.55
               })`}
             >
@@ -195,7 +205,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             <Circle
               c={position}
               r={satelliteRadius * 1.01}
-              color={`rgba(255, 255, 255, ${
+              color={`rgba(${satelliteRgb}, ${
                 satellite.opacity * 0.85
               })`}
             >
@@ -207,7 +217,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
             <Circle
               c={position}
               r={satelliteRadius}
-              color={`rgba(255, 255, 255, ${satellite.opacity})`}
+              color={`rgba(${satelliteRgb}, ${satellite.opacity})`}
             />
           </Fragment>
         )
@@ -216,7 +226,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       <Circle
         c={userPosition}
         r={USER_MARKER_RADIUS}
-        color="#fdf5f5"
+        color={markerColor}
         style="stroke"
         strokeWidth={1}
       />
@@ -225,7 +235,7 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
           key={`user-marker-tick-${index}`}
           p1={tick.start}
           p2={tick.end}
-          color="#fdf5f5"
+          color={markerColor}
           strokeWidth={1}
         />
       ))}

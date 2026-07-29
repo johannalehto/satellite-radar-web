@@ -17,6 +17,7 @@ type RadarViewProps = {
   scene: RadarScene
   selectedPassId: SatellitePassId | null
   showLabels: boolean
+  useGreenTheme: boolean
   onSelectSatellite: (passId: SatellitePassId) => void
   onBackgroundClick: () => void
 }
@@ -31,6 +32,7 @@ function RadarView({
   scene,
   selectedPassId,
   showLabels,
+  useGreenTheme,
   onSelectSatellite,
   onBackgroundClick,
 }: RadarViewProps) {
@@ -66,7 +68,9 @@ function RadarView({
   return (
     <div
       ref={containerRef}
-      className="radar-view"
+      className={`radar-view${
+        useGreenTheme ? ' radar-view--green' : ''
+      }`}
       onClick={onBackgroundClick}
     >
       <div className="radar-north-marker" aria-hidden="true">
@@ -90,7 +94,7 @@ function RadarView({
           <WithSkiaWeb
             opts={{ locateFile: () => canvaskitWasmUrl }}
             getComponent={loadRadarCanvas}
-            componentProps={{ scene, viewport }}
+            componentProps={{ scene, viewport, useGreenTheme }}
             fallback={<p className="radar-loading">Loading radar…</p>}
           />
           <div
