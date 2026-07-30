@@ -3,6 +3,7 @@ import {
   BlurMask,
   Canvas,
   Circle,
+  DashPathEffect,
   Line,
   vec,
 } from '@shopify/react-native-skia'
@@ -147,16 +148,31 @@ function RadarCanvas({
           viewport,
           deviceHeadingDeg,
         )
+        const currentPosition = toSkiaPoint(
+          satellite.position,
+          viewport,
+          deviceHeadingDeg,
+        )
         const trajectoryOpacity = satellite.opacity * 0.9
 
         return (
-          <Line
-            key={`trajectory-${satellite.passId}`}
-            p1={lineStart}
-            p2={lineEnd}
-            color={`rgba(242, 242, 242, ${trajectoryOpacity})`}
-            strokeWidth={0.4}
-          />
+          <Fragment key={`trajectory-${satellite.passId}`}>
+            <Line
+              p1={lineStart}
+              p2={currentPosition}
+              color={`rgba(222, 222, 222, ${trajectoryOpacity})`}
+              strokeCap="round"
+              strokeWidth={0.8}
+            >
+              <DashPathEffect intervals={[0.1, 3.2]} />
+            </Line>
+            <Line
+              p1={currentPosition}
+              p2={lineEnd}
+              color={`rgba(242, 242, 242, ${trajectoryOpacity})`}
+              strokeWidth={0.4}
+            />
+          </Fragment>
         )
       })}
 
