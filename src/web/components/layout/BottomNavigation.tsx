@@ -4,6 +4,7 @@ import './BottomNavigation.css'
 
 type NavigationItemProps = {
   label: string
+  onSelect?: () => void
   to: string
   end?: boolean
   children: ReactNode
@@ -11,6 +12,7 @@ type NavigationItemProps = {
 
 function NavigationItem({
   label,
+  onSelect,
   to,
   end = false,
   children,
@@ -22,6 +24,7 @@ function NavigationItem({
         `bottom-navigation-link${isActive ? ' is-active' : ''}`
       }
       end={end}
+      onClick={onSelect}
       to={to}
     >
       {children}
@@ -55,13 +58,25 @@ function ListIcon() {
   )
 }
 
-function BottomNavigation() {
+type BottomNavigationProps = {
+  onRequestDeviceHeadingAccess: () => Promise<void>
+}
+
+function BottomNavigation({
+  onRequestDeviceHeadingAccess,
+}: BottomNavigationProps) {
   return (
     <nav className="bottom-navigation" aria-label="Primary navigation">
       <NavigationItem end label="Location" to="/">
         <LocationIcon />
       </NavigationItem>
-      <NavigationItem label="Radar" to="/radar">
+      <NavigationItem
+        label="Radar"
+        onSelect={() => {
+          void onRequestDeviceHeadingAccess()
+        }}
+        to="/radar"
+      >
         <RadarIcon />
       </NavigationItem>
       <NavigationItem label="Satellite list" to="/satellites">

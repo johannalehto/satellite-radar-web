@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import AppShell from './app/AppShell'
 import SatelliteDataLayout from './app/SatelliteDataLayout'
+import { useDeviceHeading } from './hooks/useDeviceHeading'
 import type { ObserverLocation } from './location/models'
 import LocationPage from './pages/LocationPage'
 import RadarPage from './pages/RadarPage'
@@ -19,6 +20,10 @@ function App() {
   const [observerLocation, setObserverLocation] =
     useState<ObserverLocation | null>(null)
   const [showRadarLabels, setShowRadarLabels] = useState(false)
+  const {
+    headingDeg,
+    requestAccess: requestDeviceHeadingAccess,
+  } = useDeviceHeading()
   const latitude =
     observerLocation?.latitude ?? DEFAULT_RADAR_LATITUDE
   const longitude =
@@ -33,6 +38,9 @@ function App() {
               latitude={latitude}
               longitude={longitude}
               locationName={observerLocation?.name ?? null}
+              onRequestDeviceHeadingAccess={
+                requestDeviceHeadingAccess
+              }
               showRadarLabels={showRadarLabels}
               onShowRadarLabelsChange={setShowRadarLabels}
             />
@@ -43,6 +51,9 @@ function App() {
             element={
               <LocationPage
                 onLocationResolved={setObserverLocation}
+                onRequestDeviceHeadingAccess={
+                  requestDeviceHeadingAccess
+                }
               />
             }
           />
@@ -57,7 +68,12 @@ function App() {
           >
             <Route
               path="radar"
-              element={<RadarPage showLabels={showRadarLabels} />}
+              element={
+                <RadarPage
+                  deviceHeadingDeg={headingDeg}
+                  showLabels={showRadarLabels}
+                />
+              }
             />
             <Route
               path="satellites"

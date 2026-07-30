@@ -7,6 +7,7 @@ import './LocationPage.css'
 
 type LocationPageProps = {
   onLocationResolved: (location: ObserverLocation) => void
+  onRequestDeviceHeadingAccess: () => Promise<void>
 }
 
 function getCurrentCoordinates(): Promise<GeolocationCoordinates> {
@@ -29,7 +30,10 @@ function getCurrentCoordinates(): Promise<GeolocationCoordinates> {
   })
 }
 
-function LocationPage({ onLocationResolved }: LocationPageProps) {
+function LocationPage({
+  onLocationResolved,
+  onRequestDeviceHeadingAccess,
+}: LocationPageProps) {
   const navigate = useNavigate()
   const [isLocating, setIsLocating] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -37,8 +41,11 @@ function LocationPage({ onLocationResolved }: LocationPageProps) {
   async function handleFindSatellites() {
     setIsLocating(true)
     setError(null)
+    const deviceHeadingAccess =
+      onRequestDeviceHeadingAccess()
 
     try {
+      await deviceHeadingAccess
       const coordinates = await getCurrentCoordinates()
       let locationName: string | null = null
 

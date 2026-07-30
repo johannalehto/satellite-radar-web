@@ -9,10 +9,14 @@ import { useSatelliteDetailSelection } from '../hooks/useSatelliteDetailSelectio
 import './RadarPage.css'
 
 type RadarPageProps = {
+  deviceHeadingDeg: number | null
   showLabels: boolean
 }
 
-function RadarPage({ showLabels }: RadarPageProps) {
+function RadarPage({
+  deviceHeadingDeg,
+  showLabels,
+}: RadarPageProps) {
   const {
     selectedPassId,
     isDetailSheetClosing,
@@ -48,6 +52,7 @@ function RadarPage({ showLabels }: RadarPageProps) {
         </p>
       ) : (
         <RadarView
+          deviceHeadingDeg={deviceHeadingDeg}
           scene={radarScene}
           selectedPassId={selectedPassId}
           showLabels={showLabels}

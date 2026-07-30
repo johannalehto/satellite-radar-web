@@ -6,6 +6,7 @@ export type RadarViewport = {
 }
 
 export type RadarCanvasProps = {
+  deviceHeadingDeg: number
   scene: RadarScene
   viewport: RadarViewport
 }

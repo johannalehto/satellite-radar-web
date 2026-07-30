@@ -7,6 +7,7 @@ type AppShellProps = {
   latitude: number
   longitude: number
   locationName: string | null
+  onRequestDeviceHeadingAccess: () => Promise<void>
   showRadarLabels: boolean
   onShowRadarLabelsChange: (showLabels: boolean) => void
 }
@@ -15,6 +16,7 @@ function AppShell({
   latitude,
   longitude,
   locationName,
+  onRequestDeviceHeadingAccess,
   showRadarLabels,
   onShowRadarLabelsChange,
 }: AppShellProps) {
@@ -30,7 +32,11 @@ function AppShell({
       <main className="app-content">
         <Outlet />
       </main>
-      <BottomNavigation />
+      <BottomNavigation
+        onRequestDeviceHeadingAccess={
+          onRequestDeviceHeadingAccess
+        }
+      />
     </div>
   )
 }

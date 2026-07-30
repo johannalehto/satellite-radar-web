@@ -10,25 +10,27 @@
 .radar-north-marker {
   position: absolute;
   z-index: 2;
-  top: 7.35%;
-  left: 50%;
-  display: grid;
-  justify-items: center;
+  inset: 0;
   color: #dedede;
   font-family: 'Iosevka Charon Mono', monospace;
   font-size: 16px;
   font-weight: 300;
   line-height: 1;
   pointer-events: none;
-  transform: translateX(-50%);
 }
 
 .radar-north-arrow {
+  position: absolute;
   display: block;
   width: 17px;
   height: 15px;
-  margin-bottom: 5px;
   overflow: visible;
+  transform-origin: center;
+}
+
+.radar-north-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 .radar-interaction-layer {

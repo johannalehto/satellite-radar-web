@@ -25,18 +25,31 @@ const HORIZONTAL_GRID_POSITIONS = [0.3, 0.52, 0.74]
 function toSkiaPoint(
   point: Parameters<typeof projectToViewportPoint>[0],
   viewport: Parameters<typeof projectToViewportPoint>[1],
+  deviceHeadingDeg: number,
 ) {
-  const viewportPoint = projectToViewportPoint(point, viewport)
+  const viewportPoint = projectToViewportPoint(
+    point,
+    viewport,
+    deviceHeadingDeg,
+  )
   return vec(viewportPoint.x, viewportPoint.y)
 }
 
-function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
+function RadarCanvas({
+  deviceHeadingDeg,
+  scene,
+  viewport,
+}: RadarCanvasProps) {
   const center = vec(viewport.width / 2, viewport.height / 2)
   const radarRadius =
     Math.min(viewport.width, viewport.height) * RADAR_RADIUS_RATIO
   const satelliteRadius = viewport.width * SATELLITE_RADIUS_RATIO
   const tickHalfLength = viewport.width * TICK_HALF_LENGTH_RATIO
-  const userPosition = toSkiaPoint(scene.userPosition, viewport)
+  const userPosition = toSkiaPoint(
+    scene.userPosition,
+    viewport,
+    deviceHeadingDeg,
+  )
   const userMarkerTicks = [
     {
       start: vec(
@@ -127,10 +140,12 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
         const lineStart = toSkiaPoint(
           satellite.trajectory.lineStart,
           viewport,
+          deviceHeadingDeg,
         )
         const lineEnd = toSkiaPoint(
           satellite.trajectory.lineEnd,
           viewport,
+          deviceHeadingDeg,
         )
         const trajectoryOpacity = satellite.opacity * 0.9
 
@@ -164,7 +179,11 @@ function RadarCanvas({ scene, viewport }: RadarCanvasProps) {
       ))}
 
       {scene.satellites.map((satellite) => {
-        const position = toSkiaPoint(satellite.position, viewport)
+        const position = toSkiaPoint(
+          satellite.position,
+          viewport,
+          deviceHeadingDeg,
+        )
 
         return (
           <Fragment key={satellite.passId}>
